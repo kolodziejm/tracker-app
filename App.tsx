@@ -1,26 +1,35 @@
+/* eslint-disable global-require */
 import React, { useState, useEffect } from 'react';
 import { AppLoading } from 'expo';
+import { NavigationContainer } from '@react-navigation/native';
 import * as Font from 'expo-font';
-import { useScreens } from 'react-native-screens';
-import { StyleSheet, Text, View } from 'react-native';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Ionicons } from '@expo/vector-icons';
+import AuthNavigator from './navigators/AuthNavigator';
 
 const App = () => {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      await Font.loadAsync({
+        Roboto: require('native-base/Fonts/Roboto.ttf'),
+        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+        ...Ionicons.font,
+      });
+
+      setLoading(false);
+    })();
+  }, []);
+
+  if (isLoading) {
+    return <AppLoading />;
+  }
 
   return (
-    <View style={styles.container}>
-      <Text>lol</Text>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    <NavigationContainer>
+      <AuthNavigator />
+    </NavigationContainer>
   );
 };
 

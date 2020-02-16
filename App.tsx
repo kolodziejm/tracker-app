@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AppLoading } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import AuthNavigator from './navigators/AuthNavigator';
 import AppNavigator from './navigators/AppNavigator';
 import * as ROUTES from './constants/routes';
+import FirebaseContext from './context/FirebaseContext';
+import Firebase from './config/firebase';
 
 const RootNavigator = createStackNavigator();
 
@@ -41,4 +43,14 @@ const App = () => {
   );
 };
 
-export default App;
+const Index = () => (
+  <FirebaseContext.Provider value={new Firebase()}>
+    <App />
+  </FirebaseContext.Provider>
+);
+
+/* TODO:
+  Wrap App component with Firebase provider, consume context in App and check auth state on load
+*/
+
+export default Index;

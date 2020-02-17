@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCmjOqWGCo8xdgmaIQ4hCtz-w10KrpWXh0',
@@ -17,10 +18,20 @@ class Firebase {
 
   auth: firebase.auth.Auth;
 
+  db: app.firestore.Firestore;
+
+  goalsCollection: app.firestore.CollectionReference<app.firestore.DocumentData>;
+
+  notesCollection: app.firestore.CollectionReference<app.firestore.DocumentData>;
+
   constructor() {
     app.initializeApp(firebaseConfig);
 
     this.auth = app.auth();
+    this.db = app.firestore();
+
+    this.goalsCollection = this.db.collection('goals');
+    this.notesCollection = this.db.collection('notes');
   }
 
   createUserWithEmailAndPassword(email: string, password: string) {

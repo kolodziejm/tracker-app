@@ -26,7 +26,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
   const emailHandler = (value: any) => setEmail(value);
   const passwordHandler = (value: any) => setPassword(value);
 
-  const registerHandler = async () => {
+  const loginHandler = async () => {
     setErrors({ ...initialErrorObject });
 
     try {
@@ -58,7 +58,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
       <Form>
         <Item floatingLabel error={!!errors.email}>
           <Label>Email</Label>
-          <Input value={email} onChangeText={emailHandler} onSubmitEditing={registerHandler} autoCapitalize="none" />
+          <Input value={email} onChangeText={emailHandler} onSubmitEditing={loginHandler} autoCapitalize="none" />
         </Item>
         <FormHelperText color="red">{errors.email}</FormHelperText>
         <Item floatingLabel error={!!errors.password}>
@@ -66,7 +66,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
           <Input value={password} onChangeText={passwordHandler} autoCapitalize="none" secureTextEntry />
         </Item>
         <FormHelperText color="red">{errors.password}</FormHelperText>
-        <Button block dark style={{ marginBottom: 16 }} onPress={() => registerHandler()}>
+        <Button block dark style={{ marginBottom: 16 }} onPress={() => loginHandler()}>
           <Text>Sign in</Text>
         </Button>
         <Button transparent block onPress={() => navigation.replace(ROUTES.REGISTER)}>

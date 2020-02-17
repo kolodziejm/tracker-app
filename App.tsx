@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons';
+import { User } from 'firebase';
 import AuthNavigator from './navigators/AuthNavigator';
 import AppNavigator from './navigators/AppNavigator';
 import * as ROUTES from './constants/routes';
@@ -16,6 +17,9 @@ const RootNavigator = createStackNavigator();
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
+  const [isAuth, setAuth] = useState(false);
+
+  const firebase = useContext(FirebaseContext);
 
   useEffect(() => {
     (async () => {
@@ -25,7 +29,13 @@ const App = () => {
         ...Ionicons.font,
       });
 
-      setLoading(false);
+      firebase.auth.onAuthStateChanged((user: User) => {
+        if (user) {
+          setAuth(true);
+        }
+
+        setLoading(false);
+      });
     })();
   }, []);
 
@@ -36,21 +46,17 @@ const App = () => {
   return (
     <NavigationContainer>
       <RootNavigator.Navigator screenOptions={{ headerShown: false }}>
-        <RootNavigator.Screen name={ROUTES.AUTH_NAVIGATOR} component={AuthNavigator} />
-        <RootNavigator.Screen name={ROUTES.APP_NAVIGATOR} component={AppNavigator} />
+        {isAuth
+          ? <RootNavigator.Screen name={ROUTES.APP_NAVIGATOR} component={AppNavigator} />
+          : <RootNavigator.Screen name={ROUTES.AUTH_NAVIGATOR} component={AuthNavigator} />}
+
       </RootNavigator.Navigator>
     </NavigationContainer>
   );
 };
 
-const Index = () => (
+export default () => (
   <FirebaseContext.Provider value={new Firebase()}>
     <App />
   </FirebaseContext.Provider>
 );
-
-/* TODO:
-  Wrap App component with Firebase provider, consume context in App and check auth state on load
-*/
-
-export default Index;

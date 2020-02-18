@@ -20,13 +20,13 @@ const Progress: React.FC<Props> = ({ navigation }) => {
 
   const firebase = useContext(FirebaseContext);
 
+  const currentUserId = firebase.auth.currentUser.uid;
+
   useEffect(() => {
     (async () => {
       setLoading(true);
 
       try {
-        const currentUserId = firebase.auth.currentUser.uid;
-
         const goalQuerySnapshot = await firebase.goalsCollection.where('userId', '==', currentUserId).get();
         goalQuerySnapshot.forEach((doc) => {
           const savedUserGoal = doc.data();
@@ -57,11 +57,20 @@ const Progress: React.FC<Props> = ({ navigation }) => {
 
 
   const failHandler = () => {
+    const resetGoalStart = async () => {
+      const goalQuerySnapshot = await firebase.goalsCollection.where('userId', '==', currentUserId).get();
+      goalQuerySnapshot.forEach((doc) => {
+        const savedUserGoal = doc.data();
+        setUserGoal(savedUserGoal);
+
+        firebase.goalsCollection.doc(doc.id).update({ dateOfStart: new Date() });
+      });
+    };
+
     Alert.alert('Are you sure', 'Did you really fail?', [
-      { text: 'Yes', onPress: () => console.log('Yes Pressed') },
+      { text: 'Yes', onPress: () => resetGoalStart() },
       { text: 'No', onPress: () => {} },
     ]);
-    // set goal's date of start to today
   };
 
   const finishHandler = () => {

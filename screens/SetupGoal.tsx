@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {
-  Form, Item, Input, Label, Button, Text, Container, Content,
+  Form, Item, Input, Label, Button, Text,
 } from 'native-base';
 import * as ROUTES from '../constants/routes';
 import LayoutContainer from '../components/LayoutContainer';
@@ -21,9 +21,12 @@ const SetupGoal: React.FC<Props> = ({ navigation }) => {
     }
 
     try {
+      const currentUserId = firebase.auth.currentUser.uid;
+
       await firebase.goalsCollection.add({
-        userId: 'tutaj wezme z context',
-        days: goalValue,
+        userId: currentUserId,
+        days: Number.parseInt(goalValue, 10),
+        dateOfStart: new Date(),
       });
 
       navigation.replace(ROUTES.PROGRESS);

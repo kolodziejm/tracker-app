@@ -25,7 +25,9 @@ class Firebase {
   notesCollection: app.firestore.CollectionReference<app.firestore.DocumentData>;
 
   constructor() {
-    app.initializeApp(firebaseConfig);
+    if (!app.apps.length) {
+      app.initializeApp(firebaseConfig);
+    }
 
     this.auth = app.auth();
     this.db = app.firestore();

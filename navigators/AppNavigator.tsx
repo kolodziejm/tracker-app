@@ -9,9 +9,9 @@ const AppStack = createStackNavigator();
 
 const AppNavigator = () => (
   <AppStack.Navigator>
-    <AppStack.Screen name={ROUTES.SETUP_GOAL} component={SetupScreen} />
     <AppStack.Screen name={ROUTES.PROGRESS} component={ProgressScreen} />
     <AppStack.Screen name={ROUTES.NOTE} component={NoteScreen} />
+    <AppStack.Screen name={ROUTES.SETUP_GOAL} component={SetupScreen} />
   </AppStack.Navigator>
 );
 

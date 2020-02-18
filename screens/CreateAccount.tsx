@@ -43,7 +43,7 @@ const CreateAccount: React.FC<Props> = ({ navigation }) => {
     try {
       await firebase.createUserWithEmailAndPassword(email, password);
 
-      navigation.navigate(ROUTES.APP_NAVIGATOR);
+      navigation.navigate(ROUTES.APP_NAVIGATOR, { screen: ROUTES.SETUP_GOAL });
     } catch (err) {
       const { code, message } = err;
 
